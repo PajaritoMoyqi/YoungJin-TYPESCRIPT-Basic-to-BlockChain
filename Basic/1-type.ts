@@ -1,59 +1,59 @@
 // variable
 
-let firstName: string;
-let age: number;
-let address; // type any...
+let tyFirstName: string;
+let tyAge: number;
+let tyAddress; // type any...
 
-const myAge = 20; // 이미 type은 number로 유추가 됨
-const yourAge: number = 20; // 이런 중복은 피해야 함
+const tyMyAge = 20; // 이미 type은 number로 유추가 됨
+const tyYourAge: number = 20; // 이런 중복은 피해야 함
 
-let strangeName: "Juan"; // type Juan, value "Juan"
+let tyStrangeName: "Juan"; // type Juan, value "Juan"
 
 // function
 
-function getName(): string|null {
+function tyGetName(): string|null {
   return null;
 } // 둘 중 하나 반환
 
-function badFn(): any {
+function tyBadFn(): any {
   return;
 } // 안 쓰는 게 낫지, 이럴 거면 왜 TypeScript 씀?
 
-const logger = () => {
+const tyLogger = () => {
   while(true) {
     console.log('server ongoing...');
   }
 } // 화살표 함수는 never type을 반환. 절대로 실행이 종료되지 않거나 오류를 발생시키기 위해서 만든 함수임.
 
-function logError(errorMessage: string): void {
+function tyLogError(errorMessage: string): void {
   console.log('error: ', errorMessage);
 } // void type: 값을 return하지 않는 함수
 
 
 // union
 
-class FormControl {
-  constructor(initialValue: object, validator: ValidatorFn|null) {
+class TyFormControl {
+  constructor(initialValue: object, validator: TyValidatorFn|null) {
     /* ... */
   }
 }
-type ValidatorFn = (c: FormControl) => {[key: string]: any}|null;
+type TyValidatorFn = (c: TyFormControl) => {[key: string]: any}|null;
 
 // class, interface
 
-class Block {
-  readonly nonce: number;
-  readonly hash: string;
+class TyBlock {
+  readonly tyNonce: number;
+  readonly tyHash: string;
 
   constructor(
-    readonly index: number,
-    readonly previousHash: number,
-    readonly timestamp: number,
-    readonly data: string
+    readonly tyIndex: number,
+    readonly tyPreviousHash: number,
+    readonly tyTimestamp: number,
+    readonly tyData: string
   ){
     const { nonce, hash } = this.mine();
-    this.nonce = nonce;
-    this.hash = hash;
+    this.tyNonce = nonce;
+    this.tyHash = hash;
   }
 
   mine() {
@@ -64,101 +64,101 @@ class Block {
   }
 }
 
-interface Person {
+interface TyPerson {
   name: string;
   age: number;
 }
 
 // structural type system
 
-class P1 {
+class TyP1 {
   name: string;
 }
-class Another1 {
+class TyAnother1 {
   name: string;
 }
-const ano1: Another1 = new P1(); // 동작한다!
+const ano1: TyAnother1 = new TyP1(); // 동작한다!
 
-class P2 {
+class TyP2 {
   name: string;
   age: number;
 }
-class Another2 {
+class TyAnother2 {
   name: string;
 }
-const ano2: Another2 = new P2(); // 동작한다!
+const ano2: TyAnother2 = new TyP2(); // 동작한다!
 
-class P3 {
+class TyP3 {
   name: string;
 }
-class Another3 {
+class TyAnother3 {
   name: string;
   age: number;
 }
 // 아래 주석은 오류!
-// const ano3: Another3 = new P3();
+// const ano3: TyAnother3 = new TyP3();
 
 // union advanced
 
-interface Rectangle {
+interface TyRectangle {
   kind: "rectangle";
   width: number;
   height: number;
 }
-interface Circle {
+interface TyCircle {
   kind: "circle";
   radius: number;
 }
 
-type Shape = Rectangle | Circle;
+type TyShape = TyRectangle | TyCircle;
 
-function area(shape: Shape): number{
+function tyArea(shape: TyShape): number{
   switch(shape.kind) {
     case "rectangle": return shape.height*shape.width;
     case "circle": return Math.PI*shape.radius**2;
   }
 }
 
-const myRectangle: Rectangle = {
+const tyMyRectangle: TyRectangle = {
   kind: "rectangle",
   width: 10,
   height: 10
 }
-console.log(`My area is ${area(myRectangle)}`);
+console.log(`My area is ${tyArea(tyMyRectangle)}`);
 
 // any, unknown
 
-type Dog = {
+type TyDog = {
   name: string;
 }
 
-let dog1: any;
-dog1 = JSON.parse('{"naem": "Craeg"}'); // typo
-console.log(dog1.name); // undefined
+let TyDog1: any;
+TyDog1 = JSON.parse('{"naem": "Craeg"}'); // typo
+console.log(TyDog1.name); // undefined
 
-let dog2: unknown;
-dog2 = JSON.parse('{"naem": "Svechuline"}'); // typo
+let TyDog2: unknown;
+TyDog2 = JSON.parse('{"naem": "Svechuline"}'); // typo
 // 아래 코드에서는 compile 오류 발생
 // console.log(dog2.name);
 
 // type guard
 
-interface exampleA {
+interface TyExampleA {
   a: number
 };
-interface exampleB {
+interface TyExampleB {
   b: number
 };
 
-function exampleFn(x: exampleA|exampleB) {
+function exampleFn(x: TyExampleA|TyExampleB) {
   if("a" in x){
     return x.a;
   }
   return x.b;
 } // "in" type guard
 
-type Cat = {
+type TyCat = {
   discriminator: 'cat';
   age: number;
 }
-const isCat = (object: any): object is Cat => !!object && object.discriminator === 'cat';
+const isCat = (object: any): object is TyCat => !!object && object.discriminator === 'cat';
